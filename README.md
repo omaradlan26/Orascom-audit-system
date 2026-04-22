@@ -88,3 +88,20 @@ Change the admin credentials with environment variables before production use.
 - Move the DB layer from SQLite to PostgreSQL
 - Replace in-memory session storage with a stronger auth/session mechanism
 - Add export, notifications, history tracking, and deployment configs for hosted environments
+
+## Deploy (Render Blueprint)
+This repo includes `render.yaml` for deploying both services:
+- `orascom-audit-api` (FastAPI backend)
+- `orascom-audit-frontend` (Streamlit frontend)
+
+### Steps
+1. Open [Render Dashboard](https://dashboard.render.com/).
+2. Click **New** -> **Blueprint**.
+3. Connect this GitHub repository.
+4. Render will detect `render.yaml` and create both services.
+5. Set secret env vars when prompted:
+   - `AUDIT_ADMIN_USERNAME`
+   - `AUDIT_ADMIN_PASSWORD`
+6. Deploy and open the `orascom-audit-frontend` URL.
+
+The frontend automatically receives `AUDIT_API_URL` from the backend service URL via blueprint config.

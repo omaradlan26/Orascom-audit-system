@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: orascom-audit-api
+    runtime: python
+    rootDir: .
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: AUDIT_DB_PATH
+        value: /var/data/audit_system.db
+      - key: AUDIT_ADMIN_USERNAME
+        sync: false
+      - key: AUDIT_ADMIN_PASSWORD
+        sync: false
+    disk:
+      name: audit-data
+      mountPath: /var/data
+      sizeGB: 1
+
+  - type: web
+    name: orascom-audit-frontend
+    runtime: python
+    rootDir: .
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run frontend/app.py --server.address 0.0.0.0 --server.port $PORT --server.headless true
+    envVars:
+      - key: AUDIT_API_URL
+        fromService:
+          type: web
+          name: orascom-audit-api
+          property: url
