@@ -1,6 +1,18 @@
+---
+title: Orascom Audit Management System
+emoji: 📊
+colorFrom: blue
+colorTo: red
+sdk: streamlit
+sdk_version: 1.37.0
+app_file: app.py
+pinned: false
+license: mit
+---
+
 # Orascom Audit Management System
 
-Local-first MVP of a role-based audit tracking platform built with `Streamlit`, `FastAPI`, and `SQLite`.
+A role-based audit tracking platform built with Streamlit, FastAPI, and SQLite.
 
 ## Features
 - Guest read-only access
@@ -89,19 +101,28 @@ Change the admin credentials with environment variables before production use.
 - Replace in-memory session storage with a stronger auth/session mechanism
 - Add export, notifications, history tracking, and deployment configs for hosted environments
 
-## Deploy (Render Blueprint)
-This repo includes `render.yaml` for deploying both services:
+## Deploy (Hugging Face Spaces)
+
+### Hugging Face Spaces Deployment
+This repo is configured for Hugging Face Spaces deployment:
+
+1. Go to [huggingface.co/spaces](https://huggingface.co/spaces)
+2. Click **Create new Space**
+3. Choose **Streamlit** SDK
+4. Connect your GitHub repository
+5. Set Space name and visibility
+6. Add these secrets in Space settings:
+   - `AUDIT_ADMIN_USERNAME`: Your admin username
+   - `AUDIT_ADMIN_PASSWORD`: Your admin password
+7. Deploy and access your Space URL
+
+### Technical Details
+- FastAPI runs on `127.0.0.1:8000` in a background thread
+- Streamlit frontend runs on the main thread
+- SQLite database persists in Space storage
+- Single-process architecture for Spaces compatibility
+
+### Alternative: Render Blueprint
+This repo also includes `render.yaml` for Render deployment:
 - `orascom-audit-api` (FastAPI backend)
 - `orascom-audit-frontend` (Streamlit frontend)
-
-### Steps
-1. Open [Render Dashboard](https://dashboard.render.com/).
-2. Click **New** -> **Blueprint**.
-3. Connect this GitHub repository.
-4. Render will detect `render.yaml` and create both services.
-5. Set secret env vars when prompted:
-   - `AUDIT_ADMIN_USERNAME`
-   - `AUDIT_ADMIN_PASSWORD`
-6. Deploy and open the `orascom-audit-frontend` URL.
-
-The frontend automatically receives `AUDIT_API_URL` from the backend service URL via blueprint config.
